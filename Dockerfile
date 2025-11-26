@@ -37,10 +37,10 @@ LABEL name="browseruse" \
     com.docker.extension.changelog='See here for release notes: https://github.com/browser-use/browser-use/releases' \
     com.docker.extension.categories='web,utility-tools,ai'
 
-ARG TARGETPLATFORM
-ARG TARGETOS
-ARG TARGETARCH
-ARG TARGETVARIANT
+ARG TARGETPLATFORM=linux/amd64
+ARG TARGETOS=linux
+ARG TARGETARCH=amd64
+ARG TARGETVARIANT=
 
 ######### Environment Variables #################################
 
@@ -82,7 +82,7 @@ RUN echo 'Binary::apt::APT::Keep-Downloaded-Packages "1";' > /etc/apt/apt.conf.d
     && rm -f /etc/apt/apt.conf.d/docker-clean
 
 # Print debug info about build and save it to disk, for human eyes only, not used by anything else
-RUN (echo "[i] Docker build for Browser Use $(cat /VERSION.txt) starting..." \
+RUN (echo "[i] Docker build for Browser Use starting..." \
     && echo "PLATFORM=${TARGETPLATFORM} ARCH=$(uname -m) ($(uname -s) ${TARGETARCH} ${TARGETVARIANT})" \
     && echo "BUILD_START_TIME=$(date +"%Y-%m-%d %H:%M:%S %s") TZ=${TZ} LANG=${LANG}" \
     && echo \
@@ -116,27 +116,19 @@ RUN echo "[*] Setting up $BROWSERUSE_USER user uid=${DEFAULT_PUID}..." \
 # Install base apt dependencies (adding backports to access more recent apt updates)
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked,id=apt-$TARGETARCH$TARGETVARIANT \
     echo "[+] Installing APT base system dependencies for $TARGETPLATFORM..." \
-#     && echo 'deb https://deb.debian.org/debian bookworm-backports main contrib non-free' > /etc/apt/sources.list.d/backports.list \
     && mkdir -p /etc/apt/keyrings \
     && apt-get update -qq \
     && apt-get install -qq -y --no-install-recommends \
-        # 1. packaging dependencies
         apt-transport-https ca-certificates apt-utils gnupg2 unzip curl wget grep \
-        # 2. docker and init system dependencies:
-        # dumb-init gosu cron zlib1g-dev \
-        # 3. frivolous CLI helpers to make debugging failed archiving easierL
         nano iputils-ping dnsutils jq \
-        # tree yq procps \
-        # 4. browser dependencies: (auto-installed by playwright install --with-deps chromium)
-     #    libnss3 libxss1 libasound2 libx11-xcb1 \
-     #    fontconfig fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-khmeros fonts-kacst fonts-symbola fonts-noto fonts-freefont-ttf \
-     #    at-spi2-common fonts-liberation fonts-noto-color-emoji fonts-tlwg-loma-otf fonts-unifont libatk-bridge2.0-0 libatk1.0-0 libatspi2.0-0 libavahi-client3 \
-     #    libavahi-common-data libavahi-common3 libcups2 libfontenc1 libice6 libnspr4 libnss3 libsm6 libunwind8 \
-     #    libxaw7 libxcomposite1 libxdamage1 libxfont2 \
-     #    # 5. x11/xvfb dependencies:
-     #    libxkbfile1 libxmu6 libxpm4 libxt6 x11-xkb-utils x11-utils xfonts-encodings \
-     #    xfonts-scalable xfonts-utils xserver-common xvfb \
-     && rm -rf /var/lib/apt/lists/*
+        libnss3 libxss1 libasound2 libx11-xcb1 \
+        fontconfig fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-khmeros fonts-symbola fonts-noto fonts-freefont-ttf \
+        at-spi2-common fonts-liberation fonts-noto-color-emoji fonts-tlwg-loma-otf fonts-unifont libatk-bridge2.0-0 libatk1.0-0 libatspi2.0-0 libavahi-client3 \
+        libavahi-common-data libavahi-common3 libcups2 libfontenc1 libice6 libnspr4 libsm6 libunwind8 \
+        libxaw7 libxcomposite1 libxdamage1 libxfont2 \
+        libxkbfile1 libxmu6 libxpm4 libxt6 x11-xkb-utils x11-utils xfonts-encodings \
+        xfonts-scalable xfonts-utils xserver-common xvfb \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 

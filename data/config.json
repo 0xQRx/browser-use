@@ -1,0 +1,41 @@
+{
+  "browser_profile": {
+    "2c42f263-435e-4f56-98fd-11e851181e18": {
+      "id": "2c42f263-435e-4f56-98fd-11e851181e18",
+      "default": true,
+      "created_at": "2025-11-26T13:42:10.694450",
+      "headless": false,
+      "user_data_dir": "/data/chrome-profile",
+      "allowed_domains": null,
+      "downloads_path": "/data/downloads",
+      "window_size": {"width": 1024, "height": 768},
+      "proxy": {
+        "server": "http://172.17.0.1:8080",
+        "bypass": "localhost,127.0.0.1",
+        "username": null,
+        "password": null
+      }
+    }
+  },
+  "llm": {
+    "c6d438bc-ed03-4f3c-afed-9a85b608a52a": {
+      "id": "c6d438bc-ed03-4f3c-afed-9a85b608a52a",
+      "default": true,
+      "created_at": "2025-11-26T13:42:10.694470",
+      "api_key": "your-openai-api-key-here",
+      "model": "gpt-4.1-mini",
+      "temperature": null,
+      "max_tokens": null
+    }
+  },
+  "agent": {
+    "b3d490f5-b97a-4633-8616-c0d495e54ead": {
+      "id": "b3d490f5-b97a-4633-8616-c0d495e54ead",
+      "default": true,
+      "created_at": "2025-11-26T13:42:10.694482",
+      "max_steps": null,
+      "use_vision": null,
+      "system_prompt": null
+    }
+  }
+}

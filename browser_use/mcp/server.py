@@ -451,7 +451,7 @@ class BrowserUseServer:
 				max_steps=arguments.get('max_steps', 100),
 				model=arguments.get('model', 'gpt-4o'),
 				allowed_domains=arguments.get('allowed_domains', []),
-				use_vision=arguments.get('use_vision', True),
+				use_vision=arguments.get('use_vision', False),
 			)
 
 		# Browser session management tools (don't require active session)
@@ -480,7 +480,8 @@ class BrowserUseServer:
 				return await self._type_text(arguments['index'], arguments['text'])
 
 			elif tool_name == 'browser_get_state':
-				return await self._get_browser_state(arguments.get('include_screenshot', False))
+				# Always disable screenshot (ignore client request)
+				return await self._get_browser_state(include_screenshot=False)
 
 			elif tool_name == 'browser_extract_content':
 				return await self._extract_content(arguments['query'], arguments.get('extract_links', False))
