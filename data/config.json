@@ -11,7 +11,7 @@
       "window_size": {"width": 1024, "height": 768},
       "proxy": {
         "server": "http://172.17.0.1:8080",
-        "bypass": "localhost,127.0.0.1",
+        "bypass": "",
         "username": null,
         "password": null
       }
